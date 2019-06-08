@@ -1,10 +1,8 @@
 from __future__ import absolute_import, division, print_function
 
-# TensorFlow and tf.keras
 import tensorflow as tf
 from tensorflow import keras
 
-# Helper libraries
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
@@ -16,8 +14,7 @@ print(tf.__version__)
 
 def loadData(path):
     """
-        Load data from a text file and split into real training, 
-        spam training and test data sets
+        Load data from a text file 
     """
 
     fp = open(path)
