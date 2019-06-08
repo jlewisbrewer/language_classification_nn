@@ -10,8 +10,6 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sn
 import pandas as pd
 
-print(tf.__version__)
-
 def loadData(path):
     """
         Load data from a text file 
