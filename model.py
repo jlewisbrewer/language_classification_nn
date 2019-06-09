@@ -27,14 +27,9 @@ def convertLanguages(string):
 def getSets():
     data = loadData("inputs_4.csv")
     np.random.shuffle(data)
-    #data = np.array_split(data, 3)
     data = np.array_split(data, 2)
-    #trainData = np.concatenate((data[0][:,:-1], data[1][:,:-1]))
-    #trainLabels = np.concatenate((data[0][:,-1], data[1][:,-1]))
     trainData = data[0][:,:-1]
     trainLabels = data[0][:,-1]
-    #testData = data[2][:,:-1]
-    #testLabels = data[2][:,-1]
     testData = data[1][:,:-1]
     testLabels = data[1][:,-1]
     return (trainData, trainLabels), (testData, testLabels)
