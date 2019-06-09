@@ -16,7 +16,7 @@ def loadData(path):
     """
 
     fp = open(path)
-    data = np.loadtxt(fp, delimiter=", ", converters = {18: lambda s: convertLanguages(s)})
+    data = np.loadtxt(fp, delimiter=", ", converters = {22: lambda s: convertLanguages(s)})
     fp.close()
     return data
 
@@ -25,13 +25,18 @@ def convertLanguages(string):
     return languages[string.decode("utf-8")]
 
 def getSets():
-    data = loadData("inputs_3.csv")
+    data = loadData("inputs_4.csv")
     np.random.shuffle(data)
-    data = np.array_split(data, 3)
-    trainData = np.concatenate((data[0][:,:-1], data[1][:,:-1]))
-    trainLabels = np.concatenate((data[0][:,-1], data[1][:,-1]))
-    testData = data[2][:,:-1]
-    testLabels = data[2][:,-1]
+    #data = np.array_split(data, 3)
+    data = np.array_split(data, 2)
+    #trainData = np.concatenate((data[0][:,:-1], data[1][:,:-1]))
+    #trainLabels = np.concatenate((data[0][:,-1], data[1][:,-1]))
+    trainData = data[0][:,:-1]
+    trainLabels = data[0][:,-1]
+    #testData = data[2][:,:-1]
+    #testLabels = data[2][:,-1]
+    testData = data[1][:,:-1]
+    testLabels = data[1][:,-1]
     return (trainData, trainLabels), (testData, testLabels)
 
 def plotCM(cm):
@@ -58,10 +63,12 @@ if __name__ == "__main__":
         loss="sparse_categorical_crossentropy",
         metrics=["accuracy"])
 
-    model.fit(trainData, trainLabels, epochs=50)
+    model.fit(trainData, trainLabels, epochs=100)
     loss, acc = model.evaluate(testData, testLabels)
     pred = model.predict(testData)
     classes = ["english", "spanish", "mandarin", "japanese", "arabic", "turkish"]
     cm = confusion_matrix(testLabels, pred.argmax(axis=1))
     df = pd.DataFrame(data=cm, index=classes, columns=classes)
+    accuracy = np.trace(cm) / np.sum(cm)
     plotCM(df)
+    print("acc: %{:.2f}".format(accuracy * 100))
